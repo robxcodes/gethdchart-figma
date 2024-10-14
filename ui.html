@@ -1,0 +1,11 @@
+<h2>HD Chart Generator</h2>
+<p>Form is TBD</p>
+<button id="generate">Generate</button>
+<button id="cancel">Cancel</button>
+<script>
+
+document.getElementById('generate').onclick = () => {
+  parent.postMessage({ pluginMessage: { type: 'generate' } }, '*')
+}
+
+</script>
