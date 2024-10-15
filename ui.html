@@ -1,11 +1,118 @@
 <h2>HD Chart Generator</h2>
-<p>Form is TBD</p>
+<form id="hd-chart-form">
+  <table id="hd-chart-form-table">
+    <tr>
+      <th></th>
+      <th>Design</th>
+      <th>Personality</th>
+    </tr>
+  </table>
+</form>
+
 <button id="generate">Generate</button>
-<button id="cancel">Cancel</button>
+<button>Cancel</button>
 <script>
 
-document.getElementById('generate').onclick = () => {
-  parent.postMessage({ pluginMessage: { type: 'generate' } }, '*')
-}
+  const planets = [
+    ['sun', '☉'],
+    ['earth', '🜨'],
+    ['moon', '☽'],
+    ['north', '☊'],
+    ['south', '☋'],
+    ['mercury', '☿'],
+    ['venus', '♀'],
+    ['mars', '♂'],
+    ['jupiter', '♃'],
+    ['saturn', '♄'],
+    ['uranus', '♅'],
+    ['neptune', '♆'],
+    ['pluto', '♇']
+  ]
+
+  window.addEventListener('load', () => {
+    const rows = planets.map(([key, symbol], index) => {
+      const tr = document.createElement('tr');
+
+      const cell1 = document.createElement('td');
+      cell1.append(symbol);
+
+      const designInput = document.createElement('input');
+      designInput.type = 'text';
+      designInput.className = 'hd-input';
+      designInput.name = `design.${key}`;
+      designInput.onkeydown = (e) => {
+        if (e.key === 'Enter') {
+          const [nextKey] = planets[index + 1] || [];
+          nextKey
+            ? document.querySelector(`input[name="design.${nextKey}"]`).focus()
+            : document.querySelector('input[name="personality.sun"]').focus();
+        }
+      }
+      const cell2 = document.createElement('td');
+      cell2.append(designInput);
+
+      const personalityInput = document.createElement('input');
+      personalityInput.type = 'text';
+      personalityInput.className = 'hd-input';
+      personalityInput.name = `personality.${key}`;
+      personalityInput.onkeydown = (e) => {
+        if (e.key === 'Enter') {
+          const [nextKey] = planets[index + 1] || [];
+          nextKey
+            ? document.querySelector(`input[name="personality.${nextKey}"]`).focus()
+            : document.getElementById('generate').onclick();
+        }
+      }
+      const cell3 = document.createElement('td');
+      cell3.append(personalityInput);
+
+      tr.append(cell1, cell2, cell3);
+
+      return tr;
+    })
+
+    document.getElementById('hd-chart-form-table').append(...rows);
+  }, false);
+
+  document.getElementById('generate').onclick = () => {
+    try {
+      document.getElementById('error-msg')?.remove();
+      document.getElementById('hd-chart-form').disabled = true;
+      document.getElementById('generate').disabled = true;
+      const formData = new FormData(document.getElementById('hd-chart-form'));
+      const value = {};
+      for (let [key, input] of formData) {
+        if (!input) {
+          throw new Error('Empty input! Please fix it');
+        }
+
+        const [gate, profile] = input.split('.').map(d => +d || 0);
+        if (gate === 0 || profile === 0 || gate > 64 || profile > 6) {
+          throw new Error('Invalid input! Please fix it');
+        }
+
+        const [prefix, planet] = key.split('.');
+        value[prefix] = {
+          ...(value[prefix] || {}),
+          [planet]: [gate, profile]
+        }
+      }
+      parent.postMessage({ pluginMessage: { type: 'generate', value: JSON.stringify(value) } }, '*')
+    } catch (e) {
+      document.getElementById('hd-chart-form').disabled = false;
+      document.getElementById('generate').disabled = false;
+
+      const text = document.createElement('span');
+      text.id = 'error-msg';
+      text.style = { color: 'red' };
+      text.append(e.message)
+      document.getElementById('hd-chart-form').append(text);
+    }
+  }
 
 </script>
+<style>
+  #hd-chart-form-table input[type=text] {
+    width: 100px;
+  }
+</style>

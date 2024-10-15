@@ -140,28 +140,28 @@ export const gates: Record<number, GateMeta> = {
   // head
   64: {
     position: { x: 142, y: 45 },
-    channel: { x: 148, y: 68, length: 15, rotate: 90 }
+    channel: { x: 148, y: 66, length: 15, rotate: 90 }
   },
   61: {
     position: { x: 157, y: 45 },
-    channel: { x: 163, y: 68, length: 15, rotate: 90 }
+    channel: { x: 163, y: 66, length: 15, rotate: 90 }
   },
   63: {
     position: { x: 172, y: 45 },
-    channel: { x: 178, y: 68, length: 15, rotate: 90 }
+    channel: { x: 178, y: 66, length: 15, rotate: 90 }
   },
   // mind
   47: {
     position: { x: 142, y: 77 },
-    channel: { x: 148, y: 83, length: 15, rotate: 90 }
+    channel: { x: 148, y: 81, length: 15, rotate: 90 }
   },
   24: {
     position: { x: 157, y: 77 },
-    channel: { x: 163, y: 83, length: 15, rotate: 90 }
+    channel: { x: 163, y: 81, length: 15, rotate: 90 }
   },
   4: {
     position: { x: 172, y: 77 },
-    channel: { x: 178, y: 83, length: 15, rotate: 90 }
+    channel: { x: 178, y: 81, length: 15, rotate: 90 }
   },
   17: {
     position: { x: 145, y: 96 },

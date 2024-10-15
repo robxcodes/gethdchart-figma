@@ -1,4 +1,15 @@
-import { gates, centers, Centers } from './map';
+import { gates, centers, Centers, channels } from './map';
+
+export interface HDValue {
+  design: Record<string, [number, number]>,
+  personality: Record<string, [number, number]>,
+}
+
+interface DefinedGateMap {
+  isDesign?: boolean;
+  isPersonality?: boolean;
+  isConnected?: boolean;
+}
 
 function hexToRgb(hex: string) {
   const bigint = parseInt(hex.replace('#', ''), 16);
@@ -35,7 +46,7 @@ const generateGate = (gate: number, defined?: boolean) => {
   
   // Create the text inside the frame
   const text = figma.createText();
-  text.fontName = { family: "Poppins", style: "Regular" };
+  text.fontName = { family: "Poppins", style: "SemiBold" };
   text.characters = String(gate);
   text.fontSize = 6;
   text.textAlignHorizontal = 'CENTER';
@@ -50,7 +61,9 @@ const generateGate = (gate: number, defined?: boolean) => {
   return frame;
 }
 
-const generateChannel = (gate: number, isPersonality?: boolean, isDesign?: boolean, isConnected?: boolean) => {
+const generateChannel = (gate: number, gateMap?: DefinedGateMap) => {
+  const { isDesign, isPersonality, isConnected } = gateMap || {};
+
   const line = figma.createVector();
 
   const { channel } = gates[gate] || {};
@@ -69,8 +82,8 @@ const generateChannel = (gate: number, isPersonality?: boolean, isDesign?: boole
         { color: { ...red, a: 1 }, position: 1 }
       ],
       gradientTransform: [
+        [0, -1, 0],
         [1, 0, 0],
-        [0, 1, 0]
       ]
     }];
   } else {
@@ -95,7 +108,7 @@ const generateChannel = (gate: number, isPersonality?: boolean, isDesign?: boole
   return line;
 }
 
-const generateCenter = (name: Centers, isDefined?: boolean) => {
+const generateCenter = (name: Centers, isDefined?: boolean, definedGates?: number[]) => {
   const { size, position, gates: centerGates, color, vector, radius } = centers[name] || {};
 
   const center = figma.createVector()
@@ -116,25 +129,77 @@ const generateCenter = (name: Centers, isDefined?: boolean) => {
     return center;
   }
 
-  const gatesElement = centerGates.map((gate) => generateGate(gate, true));
+  const gatesElement = centerGates.map((gate) => generateGate(gate, (definedGates || []).includes(gate)));
 
   const group = figma.group([center, ...(gatesElement.filter((g) => !!g))], figma.currentPage);
 
   return group;
 }
 
-export const generate = async () => {
-  await figma.loadFontAsync({ family: "Poppins", style: "Regular" }); // Ensure font is loaded
+export const generate = async (hdValue: HDValue) => {
+  await figma.loadFontAsync({ family: "Poppins", style: "SemiBold" }); // Ensure font is loaded
   
   const mainFrame = figma.createFrame();
   mainFrame.resize(326, 549);
   mainFrame.clipsContent = false;
   mainFrame.fills = []
-  
-  Object.keys(gates).map((gate) => mainFrame.appendChild(generateChannel(Number(gate))))
-  Object.keys(centers).map((center) => mainFrame.appendChild(generateCenter(center as Centers)));
 
-  mainFrame
+  const definedGateMap: Record<number, any> = {};
+
+  const { design, personality } = hdValue;
+  Object.values(design).forEach(([gate]) => {
+    definedGateMap[gate] = {
+      ...(definedGateMap[gate] || {}),
+      isDesign: true,
+    }
+  })
+  Object.values(personality).forEach(([gate]) => {
+    definedGateMap[gate] = {
+      ...(definedGateMap[gate] || {}),
+      isPersonality: true,
+    }
+  })
+  channels.forEach(([gate1, gate2]) => {
+    if (!!definedGateMap[gate1] && !!definedGateMap[gate2]) {
+      definedGateMap[gate1] = {
+        ...definedGateMap[gate1],
+        isConnected: true
+      }
+      definedGateMap[gate2] = {
+        ...definedGateMap[gate2],
+        isConnected: true
+      }
+    }
+  })
+
+  const definedGates: number[] = [];
+  const undefinedGates: number[] = [];
+  const definedCenters: Centers[] = [];
+
+  Object.keys(centers).forEach((center) => {
+    const { gates } = centers[center as Centers];
+    gates.forEach((gate) => {
+      if (!!definedGateMap[gate]) {
+        definedGates.push(gate);
+        if (definedGateMap[gate].isConnected) {
+          definedCenters.push(center as Centers);
+        }
+      } else {
+        undefinedGates.push(gate);
+      }
+    })
+  })
+
+  undefinedGates.map((undGate) => mainFrame.appendChild(
+    generateChannel(undGate)
+  ))
+  definedGates.map((defGate) => mainFrame.appendChild(
+    generateChannel(defGate, definedGateMap[defGate])
+  ))
+
+  Object.keys(centers).map((center) => mainFrame.appendChild(
+    generateCenter(center as Centers, definedCenters.includes(center as Centers), definedGates)
+  ));
 
   figma.currentPage.appendChild(mainFrame);
   figma.currentPage.selection = [mainFrame];
