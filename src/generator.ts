@@ -82,8 +82,8 @@ const generateChannel = (gate: number, gateMap?: DefinedGateMap) => {
         { color: { ...red, a: 1 }, position: 1 }
       ],
       gradientTransform: [
-        [0, -1, 0],
-        [1, 0, 0],
+        [0, 0.16, 0.5],
+        [-0.16, 0, 0.5],
       ]
     }];
   } else {
