@@ -1,4 +1,5 @@
-import { gates, centers, Centers, channels } from './map';
+import { gates, centers, channels } from './map';
+import { Centers } from './type';
 
 export interface HDValue {
   design: Record<string, [number, number]>,
@@ -48,7 +49,7 @@ const generateGate = (gate: number, defined?: boolean) => {
   const text = figma.createText();
   text.fontName = { family: "Poppins", style: "SemiBold" };
   text.characters = String(gate);
-  text.fontSize = 6;
+  text.fontSize = 7;
   text.textAlignHorizontal = 'CENTER';
   text.textAlignVertical = 'CENTER';
   text.fills = [{
@@ -109,7 +110,7 @@ const generateChannel = (gate: number, gateMap?: DefinedGateMap) => {
 }
 
 const generateCenter = (name: Centers, isDefined?: boolean, definedGates?: number[]) => {
-  const { size, position, gates: centerGates, color, vector, radius } = centers[name] || {};
+  const { size, position, gates: centerGates, color, vector } = centers[name] || {};
 
   const center = figma.createVector()
 
@@ -120,8 +121,7 @@ const generateCenter = (name: Centers, isDefined?: boolean, definedGates?: numbe
   center.vectorPaths = [{ windingRule: 'EVENODD', data: vector }]
 
   center.strokeWeight = 2;
-  center.strokeAlign = 'OUTSIDE';
-  center.cornerRadius = radius;
+  center.strokeAlign = 'CENTER';
   center.strokes = [{ type: 'SOLID', color: hexToRgb(color) }];
   center.fills = [{ type: 'SOLID', color: isDefined ? hexToRgb(color) : white }];
 

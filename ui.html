@@ -112,7 +112,22 @@
 
 </script>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap');
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+  #hd-chart-form-table th {
+    font-size: 12px;
+  }
   #hd-chart-form-table input[type=text] {
     width: 100px;
+    outline: none;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid #d9d9d9;
+    transition: 0.2s ease all;
+  }
+  #hd-chart-form-table input[type=text]:focus {
+    border-bottom: 2px solid #342973;
   }
 </style>
