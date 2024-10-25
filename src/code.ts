@@ -9,7 +9,7 @@ import { generate, HDValue } from './generator';
 // full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
 
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { height: 500, width: 300 });
+figma.showUI(__html__, { height: 500, width: 250 });
 
 figma.ui.onmessage = async (msg: { type: string, value: string }) => {
   if (msg.type === 'generate') {
