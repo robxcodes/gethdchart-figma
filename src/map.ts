@@ -183,7 +183,7 @@ export const gates: Record<number, GateMeta> = {
   },
   20: {
     position: { x: 132, y: 176 },
-    channel: { x: 136, y: 175, length: 190, rotate: -120, alwaysRoundCap: true }
+    channel: { x: 42, y: 338, length: 190, rotate: 60, alwaysRoundCap: true }
   },
   16: {
     position: { x: 132, y: 162 },
@@ -209,7 +209,7 @@ export const gates: Record<number, GateMeta> = {
   // g
   7: {
     position: { x: 142, y: 264 },
-    channel: { x: 148, y: 269, length: 35, rotate: 90 }
+    channel: { x: 148, y: 267, length: 35, rotate: 90 }
   },
   1: {
     position: { x: 157, y: 249 },
@@ -217,7 +217,7 @@ export const gates: Record<number, GateMeta> = {
   },
   13: {
     position: { x: 172, y: 264 },
-    channel: { x: 178, y: 269, length: 35, rotate: 90 }
+    channel: { x: 178, y: 267, length: 35, rotate: 90 }
   },
   25: {
     position: { x: 187, y: 279 },
@@ -237,12 +237,12 @@ export const gates: Record<number, GateMeta> = {
   },
   10: {
     position: { x: 127, y: 279 },
-    channel: { x: 132, y: 287, length: 104, rotate: -150, alwaysRoundCap: true }
+    channel: {  x: 42, y: 338, length: 104, rotate: 30, alwaysRoundCap: true }
   },
   // sacral
   5: {
     position: { x: 142, y: 390 },
-    channel: { x: 148, y: 393, length: 40, rotate: 90 },
+    channel: { x: 148, y: 390, length: 40, rotate: 90 },
   },
   14: {
     position: { x: 157, y: 390 },
@@ -274,7 +274,7 @@ export const gates: Record<number, GateMeta> = {
   },
   34: {
     position: { x: 132, y: 402 },
-    channel: { x: 41, y: 340, length: 116, rotate: -35, alwaysRoundCap: true },
+    channel: { x: 42, y: 338, length: 116, rotate: -35, alwaysRoundCap: true },
   },
   // spleen
   48: {

@@ -1,5 +1,5 @@
 {
-  "name": "HD Chart Generator",
+  "name": "gethdchart",
   "id": "1424263717436381076",
   "api": "1.0.0",
   "main": "dist/code.js",
