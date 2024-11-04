@@ -12,7 +12,7 @@ interface DefinedGateMap {
   isConnected?: boolean;
 }
 
-function hexToRgb(hex: string) {
+export function hexToRgb(hex: string) {
   const bigint = parseInt(hex.replace('#', ''), 16);
   return {
     r: ((bigint >> 16) & 255) / 255,
@@ -21,12 +21,12 @@ function hexToRgb(hex: string) {
   };
 }
 
-const purple = hexToRgb('342973');
-const white = hexToRgb('FFFFFF');
-const brokenWhite = hexToRgb('F5F5F5');
-const grey = hexToRgb('D9D9D9');
-const darkGrey = hexToRgb('31243D');
-const red = hexToRgb('D90A0A');
+export const purple = hexToRgb('342973');
+export const white = hexToRgb('FFFFFF');
+export const brokenWhite = hexToRgb('F5F5F5');
+export const grey = hexToRgb('D9D9D9');
+export const darkGrey = hexToRgb('31243D');
+export const red = hexToRgb('D90A0A');
 
 const generateGate = (gate: number, defined?: boolean) => {
   const { position } = gates[gate] || {};
@@ -147,6 +147,7 @@ export const generate = async (hdValue: HDValue) => {
   const definedGateMap: Record<number, any> = {};
 
   const { design, personality } = hdValue;
+
   Object.values(design).forEach(([gate]) => {
     definedGateMap[gate] = {
       ...(definedGateMap[gate] || {}),
@@ -204,4 +205,12 @@ export const generate = async (hdValue: HDValue) => {
   figma.currentPage.appendChild(mainFrame);
   figma.currentPage.selection = [mainFrame];
   figma.viewport.scrollAndZoomIntoView([mainFrame]);
+
+  return {
+    mainFrame,
+    definedCenters,
+    definedGates,
+    definedGateMap,
+    undefinedGates,
+  }
 }

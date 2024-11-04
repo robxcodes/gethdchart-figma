@@ -1,5 +1,21 @@
 import { CenterMeta, Centers, GateMeta } from "./type"
 
+export const planets = [
+  ['sun', '☉'],
+  ['earth', '🜨'],
+  ['moon', '☽'],
+  ['north', '☊'],
+  ['south', '☋'],
+  ['mercury', '☿'],
+  ['venus', '♀'],
+  ['mars', '♂'],
+  ['jupiter', '♃'],
+  ['saturn', '♄'],
+  ['uranus', '♅'],
+  ['neptune', '♆'],
+  ['pluto', '♇']
+]
+
 export const centers: Record<Centers, CenterMeta> = {
   head: {
     size: { width: 76, height: 60 },
@@ -65,6 +81,18 @@ export const centers: Record<Centers, CenterMeta> = {
     vector: 'M 66 5 C 66 2 64 0 61 0 L 5 0 C 2 0 0 2 0 5 L 0 61 C 0 64 2 66 5 66 L 61 66 C 64 66 66 64 66 61 L 66 5 Z',
   },
 }
+
+export const gateToCenter: Record<number, Centers> = Object.keys(centers).reduce(
+  (map, center) => {
+    const { gates } = centers[center as Centers];
+    const gateMap = gates.reduce(
+      (gm, gate) => ({ ...gm, [gate]: center }),
+      {}
+    )
+    return { ...map, ...gateMap }
+  },
+  {}
+)
 
 export const channels = [
   [47, 64],
