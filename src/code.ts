@@ -1,3 +1,4 @@
+import { extraGenerate } from './extra-generator';
 import { generate, HDValue } from './generator';
 
 // This plugin will open a window to prompt the user to enter a number, and
@@ -15,6 +16,11 @@ figma.ui.onmessage = async (msg: { type: string, value: string }) => {
   if (msg.type === 'generate') {
     const hdValues = JSON.parse(msg.value);
     await generate(hdValues);
+  }
+
+  if (msg.type === 'generate-all') {
+    const hdValues = JSON.parse(msg.value);
+    await extraGenerate(hdValues);
   }
 
   // Make sure to close the plugin when you're done. Otherwise the plugin will

@@ -107,7 +107,7 @@
           [planet]: [gate, profile]
         }
       }
-      parent.postMessage({ pluginMessage: { type: 'generate', value: JSON.stringify(value) } }, '*')
+      parent.postMessage({ pluginMessage: { type: 'generate-all', value: JSON.stringify(value) } }, '*')
     } catch (e) {
       document.getElementById('hd-chart-form').disabled = false;
       document.getElementById('generate').disabled = false;
