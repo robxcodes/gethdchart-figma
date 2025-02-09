@@ -1,16 +1,16 @@
 import { crosses, definitions, types } from "./extra-map";
 import { Authority, IncarnationCrossAngle, Types } from "./extra-type";
 import { darkGrey, generate, hexToRgb, red, white } from "./generator";
-import { centers, channels, gateToCenter, planets } from "./map";
+import { gateToCenter, planets } from "./map";
 import { Centers, HDValue } from "./type";
 
-const lightBlue = hexToRgb('E0F0FF');
 const darkBlue = hexToRgb('19558C');
-const lightRed = hexToRgb('FCC3CF');
+const lightIndigo = hexToRgb('6973C9');
+const mainIndigo = hexToRgb('4B58BF');
 
-const generateText = (content: string, size: number, color: RGB, align: TextNode["textAlignHorizontal"]) => {
+const generateText = (content: string, size: number, color: RGB, style: 'Regular' | 'Bold', align: TextNode["textAlignHorizontal"]) => {
   const text = figma.createText();
-  text.fontName = { family: "Inter", style: "Medium" };
+  text.fontName = { family: "Domine", style };
   text.characters = content;
   text.fontSize = size;
   text.textAlignHorizontal = align;
@@ -26,39 +26,39 @@ const generateText = (content: string, size: number, color: RGB, align: TextNode
 
 const generatePlanets = (hdValue: HDValue) => {
   const planetFrame = figma.createFrame();
-  planetFrame.resize(135, 319);
+  planetFrame.resize(145, 308);
   planetFrame.fills = [{
     type: 'SOLID',
-    color: lightBlue
+    color: lightIndigo
   }];
   planetFrame.layoutMode = 'VERTICAL';
-  planetFrame.itemSpacing = 1;
+  planetFrame.itemSpacing = 2;
   planetFrame.primaryAxisAlignItems = 'CENTER';
   planetFrame.counterAxisAlignItems = 'CENTER';
   planetFrame.cornerRadius = 4;
-  
+
   planetFrame.strokes = [{
     type: 'SOLID',
-    color: lightBlue
+    color: lightIndigo
   }];
-  planetFrame.strokeWeight = 1;
-  planetFrame.strokeAlign = 'INSIDE';
+  planetFrame.strokeWeight = 2;
+  planetFrame.strokeAlign = 'OUTSIDE';
   planetFrame.x = -150;
   planetFrame.clipsContent = true;
 
   const titleFrame = figma.createFrame();
-  titleFrame.fills = [];
+  titleFrame.fills = [{ type: 'SOLID', color: white }];
   titleFrame.layoutMode = 'HORIZONTAL';
   titleFrame.primaryAxisAlignItems = 'CENTER';
   titleFrame.counterAxisAlignItems = 'CENTER';
   titleFrame.primaryAxisSizingMode = 'FIXED';
   titleFrame.counterAxisSizingMode = 'FIXED';
   titleFrame.itemSpacing = 2;
-  titleFrame.resize(133, 20);
+  titleFrame.resize(145, 22);
 
-  titleFrame.appendChild(generateText('Design', 8, red, 'CENTER'));
-  titleFrame.appendChild(generateText('/', 8, darkBlue, 'CENTER'))
-  titleFrame.appendChild(generateText('Personality', 8, darkGrey, 'CENTER'))
+  titleFrame.appendChild(generateText('Design', 9, red, 'Bold', 'CENTER'));
+  titleFrame.appendChild(generateText('/', 9, mainIndigo, 'Bold', 'CENTER'))
+  titleFrame.appendChild(generateText('Personality', 9, darkGrey, 'Bold', 'CENTER'))
   planetFrame.appendChild(titleFrame);
 
   planets.forEach(([key, symbol]) => {
@@ -71,17 +71,16 @@ const generatePlanets = (hdValue: HDValue) => {
     valueFrame.counterAxisSizingMode = 'FIXED';
     valueFrame.paddingLeft = 8;
     valueFrame.paddingRight = 8;
-    valueFrame.resize(133, 22);
-  
-    const designText = generateText(hdValue.design[key].join('.'), 10, red, 'LEFT');
+    valueFrame.resize(145, 20);
+
+    const designText = generateText(hdValue.design[key].join('.'), 9, red, 'Regular', 'LEFT');
     valueFrame.appendChild(designText);
     designText.layoutSizingHorizontal = 'FILL';
-  
-    const symbolText = generateText(symbol, 10, darkBlue, 'CENTER');
-    symbolText.fontName = { family: 'Symbol', style: 'Regular' };
+
+    const symbolText = generateText(symbol, 12, darkBlue, 'Bold', 'CENTER');
     valueFrame.appendChild(symbolText)
-  
-    const personalityText = generateText(hdValue.personality[key].join('.'), 10, darkGrey, 'RIGHT');
+
+    const personalityText = generateText(hdValue.personality[key].join('.'), 9, darkGrey, 'Regular', 'RIGHT');
     valueFrame.appendChild(personalityText)
     personalityText.layoutSizingHorizontal = 'FILL';
 
@@ -94,28 +93,28 @@ const generatePlanets = (hdValue: HDValue) => {
 
 const generateMeta = (meta: Record<string, { value: string, extra?: string, isSpecial?: boolean }>) => {
   const metaFrame = figma.createFrame();
-  metaFrame.resize(135, 318);
+  metaFrame.resize(145, 308);
   metaFrame.fills = [{
     type: 'SOLID',
-    color: lightRed
+    color: lightIndigo
   }];
   metaFrame.strokes = [{
     type: 'SOLID',
-    color: lightRed
+    color: lightIndigo
   }];
-  metaFrame.strokeWeight = 1;
+  metaFrame.strokeWeight = 2;
   metaFrame.strokeAlign = 'INSIDE';
   metaFrame.layoutMode = 'VERTICAL';
-  metaFrame.itemSpacing = 1;
+  metaFrame.itemSpacing = 2;
   metaFrame.counterAxisAlignItems = 'MIN';
   metaFrame.cornerRadius = 6;
   metaFrame.clipsContent = true;
-  
+
   metaFrame.x = 350;
 
   Object.entries(meta).forEach(([title, { value, extra }]) => {
     const valueFrame = figma.createFrame();
-    valueFrame.resize(133, 22);
+    valueFrame.resize(145, 22);
     valueFrame.fills = [{ type: 'SOLID', color: white }];
     valueFrame.layoutMode = 'VERTICAL';
     valueFrame.primaryAxisAlignItems = 'CENTER';
@@ -127,12 +126,9 @@ const generateMeta = (meta: Record<string, { value: string, extra?: string, isSp
     valueFrame.paddingBottom = 6;
     valueFrame.itemSpacing = 2;
 
-    const titleText = generateText(`Your ${title} is`, 8, hexToRgb('807A7A'), 'LEFT');
-    titleText.fontName = { family: 'Inter', style: 'Regular' }
-    valueFrame.appendChild(titleText);
-  
-    valueFrame.appendChild(generateText(value, 10, darkGrey, 'LEFT'))
-    extra && valueFrame.appendChild(generateText(extra, 8, hexToRgb('686464'), 'LEFT'))
+    valueFrame.appendChild(generateText(`Your ${title} is`, 8, hexToRgb('807A7A'), 'Regular', 'LEFT'));
+    valueFrame.appendChild(generateText(value, 10, mainIndigo, 'Bold', 'LEFT'))
+    extra && valueFrame.appendChild(generateText(extra, 8, hexToRgb('686464'), 'Regular', 'LEFT'))
     metaFrame.appendChild(valueFrame);
   })
 
@@ -142,9 +138,8 @@ const generateMeta = (meta: Record<string, { value: string, extra?: string, isSp
 
 export const extraGenerate = async (hdValue: HDValue) => {
   await Promise.all([
-    figma.loadFontAsync({ family: "Inter", style: "Regular" }),
-    figma.loadFontAsync({ family: "Inter", style: "Medium" }),
-    figma.loadFontAsync({ family: "Symbol", style: "Regular" })
+    figma.loadFontAsync({ family: "Domine", style: "Regular" }),
+    figma.loadFontAsync({ family: "Domine", style: "Bold" }),
   ])
 
   const planetFrame = generatePlanets(hdValue);
@@ -159,22 +154,22 @@ export const extraGenerate = async (hdValue: HDValue) => {
 
   activeChannels.forEach(([gate1, gate2]) => {
     const [center1, center2] = [gateToCenter[gate1], gateToCenter[gate2]];
-        const splitIndex = centerSplits.findIndex((split) => split.includes(center1) || split.includes(center2))
-        const existingSplit = splitIndex > -1 ? centerSplits[splitIndex] : [];
+    const splitIndex = centerSplits.findIndex((split) => split.includes(center1) || split.includes(center2))
+    const existingSplit = splitIndex > -1 ? centerSplits[splitIndex] : [];
 
-        if (!existingSplit.includes(center1)) {
-          existingSplit.push(center1)
-        }
+    if (!existingSplit.includes(center1)) {
+      existingSplit.push(center1)
+    }
 
-        if (!existingSplit.includes(center2)) {
-          existingSplit.push(center2)
-        }
+    if (!existingSplit.includes(center2)) {
+      existingSplit.push(center2)
+    }
 
-        if (splitIndex > -1) {
-          centerSplits[splitIndex] = existingSplit;
-        } else {
-          centerSplits.push(existingSplit)
-        }
+    if (splitIndex > -1) {
+      centerSplits[splitIndex] = existingSplit;
+    } else {
+      centerSplits.push(existingSplit)
+    }
   });
 
   const motorCenters: Centers[] = ['sacral', 'esp', 'root', 'heart']
@@ -223,7 +218,7 @@ export const extraGenerate = async (hdValue: HDValue) => {
   const incarnationCrossTheme = crosses[incarnationCrossAngle][incarnationCrossGates];
 
   const meta = {
-    type: { value: type},
+    type: { value: type },
     signature: { value: types[type].signature },
     'not-self theme': { value: types[type].notSelf },
     strategy: { value: types[type].strategy },

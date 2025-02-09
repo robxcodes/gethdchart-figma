@@ -21,63 +21,63 @@ export const centers: Record<Centers, CenterMeta> = {
     size: { width: 76, height: 60 },
     position: { x: 126, y: 1 },
     gates: [64, 61, 63],
-    color: 'F3C13F',
+    color: 'B284EC',
     vector: 'M 3 60 C 1 60 0 57 1 55 L 34 3 C 36 0 38 0 40 3 L 73 55 C 74 57 73 60 70 60 L 3 60 Z',
   },
   mind: {
     size: { width: 76, height: 60 },
     position: { x: 126, y: 75 },
     gates: [47, 24, 4, 17, 11, 43],
-    color: '4FD21F',
+    color: '7A9AE3',
     vector: 'M 3 0 C 1 0 0 3 1 5 L 34 57 C 36 60 38 60 40 57 L 73 5 C 74 3 73 0 70 0 L 3 0 Z',
   },
   throat: {
     size: { width: 66, height: 66 },
     position: { x: 130, y: 148 },
     gates: [62, 23, 56, 35, 12, 45, 33, 8, 31, 20, 16],
-    color: 'F3893F',
+    color: '5AC6E7',
     vector: 'M 66 5 C 66 2 64 0 61 0 L 5 0 C 2 0 0 2 0 5 L 0 61 C 0 64 2 66 5 66 L 61 66 C 64 66 66 64 66 61 L 66 5 Z',
   },
   g: {
     size: { width: 82, height: 82 },
     position: { x: 123, y: 245 },
     gates: [1, 13, 25, 46, 2, 15, 10, 7],
-    color: 'F3C13F',
+    color: '1FD2A9',
     vector: 'M 2 44 L 36 78 C 38 80 42 80 44 78 L 78 44 C 80 42 80 38 78 36 L 44 2 C 42 0 38 0 36 2 L 2 36 C 0 38 0 42 2 44 Z'
   },
   heart: {
     size: { width: 76, height: 44 },
     position: { x: 207, y: 300 },
     gates: [26, 51, 21, 40],
-    color: 'F76E76',
+    color: '4FD21F',
     vector: 'M 1 38 C 0 40 1 43 3 43 L 69 43 C 71 43 73 40 71 38 L 38 1 C 37 0 35 0 34 1 L 1 38 Z'
   },
   spleen: {
     size: { width: 60, height: 76 },
     position: { x: 1, y: 352 },
     gates: [48, 57, 44, 50, 32, 28, 18],
-    color: 'F3893F',
+    color: 'F3B43F',
     vector: 'M 5 1 C 3 0 0 1 0 4 L 0 70 C 0 73 3 74 5 73 L 57 40 C 59 38 59 36 57 34 L 5 1 Z'
   },
   sacral: {
     size: { width: 66, height: 66 },
     position: { x: 130, y: 388 },
     gates: [5, 14, 29, 59, 9, 3, 42, 27, 34],
-    color: 'F76E76',
+    color: 'F3783F',
     vector: 'M 66 5 C 66 2 64 0 61 0 L 5 0 C 2 0 0 2 0 5 L 0 61 C 0 64 2 66 5 66 L 61 66 C 64 66 66 64 66 61 L 66 5 Z',
   },
   esp: {
     size: { width: 60, height: 76 },
     position: { x: 267, y: 352 },
     gates: [6, 37, 22, 36, 30, 55, 49],
-    color: 'F3893F',
+    color: 'F3E13F',
     vector: 'M 54 73 C 56 74 59 73 59 70 L 59 4 C 59 1 56 0 54 1 L 2 34 C 0 36 0 38 2 40 L 54 73 Z'
   },
   root: {
     size: { width: 66, height: 66 },
     position: { x: 130, y: 484 },
     gates: [58, 38, 54, 53, 60, 52, 19, 39, 41],
-    color: 'F3893F',
+    color: 'F76E76',
     vector: 'M 66 5 C 66 2 64 0 61 0 L 5 0 C 2 0 0 2 0 5 L 0 61 C 0 64 2 66 5 66 L 61 66 C 64 66 66 64 66 61 L 66 5 Z',
   },
 }
