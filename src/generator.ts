@@ -44,7 +44,7 @@ const generateGate = (gate: number, defined?: boolean) => {
   frame.primaryAxisAlignItems = 'CENTER';
   frame.counterAxisAlignItems = 'CENTER';
   frame.resize(12, 12);
-  
+
   // Create the text inside the frame
   const text = figma.createText();
   text.fontName = { family: "Poppins", style: "SemiBold" };
@@ -72,14 +72,14 @@ const generateChannel = (gate: number, gateMap?: DefinedGateMap) => {
   if (!channel) return line;
 
   const { x, y, length, rotate, alwaysRoundCap } = channel;
-  
+
   line.vectorPaths = [{ windingRule: 'EVENODD', data: `M 3 3 L ${length - 3} 3` }]
 
   if (isPersonality && isDesign) {
     line.strokes = [{
       type: 'GRADIENT_LINEAR',
       gradientStops: [
-        { color: { ...darkGrey, a: 1}, position: 0 },
+        { color: { ...darkGrey, a: 1 }, position: 0 },
         { color: { ...red, a: 1 }, position: 1 }
       ],
       gradientTransform: [
@@ -138,13 +138,14 @@ const generateCenter = (name: Centers, isDefined?: boolean, definedGates?: numbe
 
 export const generate = async (hdValue: HDValue) => {
   await figma.loadFontAsync({ family: "Poppins", style: "SemiBold" }); // Ensure font is loaded
-  
+
   const mainFrame = figma.createFrame();
   mainFrame.resize(326, 549);
   mainFrame.clipsContent = false;
   mainFrame.fills = []
 
   const definedGateMap: Record<number, any> = {};
+  const activeChannels: number[][] = [];
 
   const { design, personality } = hdValue;
 
@@ -170,6 +171,7 @@ export const generate = async (hdValue: HDValue) => {
         ...definedGateMap[gate2],
         isConnected: true
       }
+      activeChannels.push([gate1, gate2]);
     }
   })
 
@@ -182,7 +184,7 @@ export const generate = async (hdValue: HDValue) => {
     gates.forEach((gate) => {
       if (!!definedGateMap[gate]) {
         definedGates.push(gate);
-        if (definedGateMap[gate].isConnected) {
+        if (definedGateMap[gate].isConnected && !definedCenters.includes(center as Centers)) {
           definedCenters.push(center as Centers);
         }
       } else {
@@ -207,10 +209,10 @@ export const generate = async (hdValue: HDValue) => {
   figma.viewport.scrollAndZoomIntoView([mainFrame]);
 
   return {
+    activeChannels,
     mainFrame,
     definedCenters,
     definedGates,
-    definedGateMap,
     undefinedGates,
   }
 }
