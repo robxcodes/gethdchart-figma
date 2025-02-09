@@ -152,17 +152,13 @@ export const extraGenerate = async (hdValue: HDValue) => {
   const {
     mainFrame,
     definedCenters,
-    definedGateMap,
+    activeChannels,
   } = await generate(hdValue);
 
   const centerSplits: Centers[][] = [];
 
-  definedCenters.forEach((key) => {
-    const { gates } = centers[key];
-    gates.forEach((gate) => {
-      if (definedGateMap[gate]?.isConnected) {
-        const currentChannel = channels.find((channel) => channel.includes(gate)) || [];
-        const [center1, center2] = currentChannel?.map((gt) => gateToCenter[gt]);
+  activeChannels.forEach(([gate1, gate2]) => {
+    const [center1, center2] = [gateToCenter[gate1], gateToCenter[gate2]];
         const splitIndex = centerSplits.findIndex((split) => split.includes(center1) || split.includes(center2))
         const existingSplit = splitIndex > -1 ? centerSplits[splitIndex] : [];
 
@@ -179,9 +175,7 @@ export const extraGenerate = async (hdValue: HDValue) => {
         } else {
           centerSplits.push(existingSplit)
         }
-      }
-    })
-  })
+  });
 
   const motorCenters: Centers[] = ['sacral', 'esp', 'root', 'heart']
   let type: Types;
